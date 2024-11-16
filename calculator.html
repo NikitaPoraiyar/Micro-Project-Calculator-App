@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        justify-content: center;
+    }
+    .main-container{
+        background-color:#3B4664;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); */
+
+
+    }
+    .top-container{
+        background-color: #00000040;
+        /* box-shadow: 0px 4px 4px 0px #00000040; */
+        width: 70vh;
+        height: 10vh;
+        margin-bottom: 4vh;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        border: none;
+        border-radius: 1em;
+
+    }
+    .top-container > input{
+        background-color: #00000040;
+        height: 10vh;
+        width: 70vh;
+        border: none;
+        border-radius: 0.4em;
+        font-size: 2em;
+        color: #ffff;
+        text-align: right;
+    }
+    .bottom-container{
+        background-color: #00000040;
+        display: grid;        
+        height: 55vh;
+        width: 70vh;
+        border-radius: 1em;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        
+    }
+    .grid1-container{
+        display: grid;
+        grid-template-areas: "item7 item8 item9 Delete"
+                            "item4 item5 item6 adding"
+                            "item1 item2 item3 subtracting"
+                            "deci item0 divide multi";
+        gap: 0.4em;
+        padding: 1em;
+        
+    }
+    .grid2-container{
+        display: grid;
+        grid-template-areas: "reset equals";
+        gap: 0.5em;
+
+    }
+
+    button{
+        font-family: Inter;
+        font-size: 1em;
+    }
+    .item{
+        color: #3B4664;
+        height: 8vh;
+        width: 7em;
+        border-radius: 12px;
+    }
+    
+    .operators{
+        height: 8vh;
+        width: 7em;
+        border-radius: 12px;
+        /* background-color:#5d6d7e; */
+    }
+    .item7{
+        grid-area: item7;
+    }
+    .item8{
+        grid-area: item8;
+    }
+    .item9{
+        grid-area: item9;
+    }
+    .Del{
+        grid-area: Delete;
+        background-color: #647299;
+        color: #ffff;
+    }
+    .item4{
+        grid-area: item4;
+    }
+    .item5{
+        grid-area: item5;
+    }
+    .item6{
+        grid-area: item6;
+    }
+    
+    .add {
+        grid-area: adding;
+    }
+    .item1{
+        grid-area: item1;
+    }
+    .item2{
+        grid-area: item2;
+    }
+    .item3{
+        grid-area: item3;
+    }
+    .subtract{
+        grid-area: subtracting;
+    }
+    .decimal{
+        grid-area: deci;
+    }
+    .item0{
+        grid-area: item0;
+    }
+    .divide{
+        grid-area: divide;
+    }
+    .multiply{
+        grid-area: multi;
+    }
+    .reset{
+        grid-area: reset;
+        background-color: #647299;
+        width: 32vh;
+        color: #ffff;
+        height: 8vh;
+    }
+    .equals{
+        grid-area: equals;
+        background-color:#D13F30;
+        color: #ffff;
+        width: 32vh;
+        height: 8vh;
+    }
+    
+    
+</style>
+<body>
+    <div class="main-container">
+        <div class="top-container">
+            <input type="text" id="calculate">
+        </div>
+        <div class="bottom-container">
+            <div class="grid1-container">
+                <button class=" item item7"><b>7</b></button>
+                <button class=" item item8"><b>8</b></button>
+                <button class="item item9"><b>9</b></button>
+                <button class="item Del" id="Del"><b>DEL</b></button>
+                <button class="item item4"><b>4</b></button>
+                <button class="item item5"><b>5</b></button>
+                <button class="item item6"><b>6</b></button>
+                <button class="operators add"><b>+</b></button>
+                <button class="item item1"><b>1</b></button>
+                <button class="item item2"><b>2</b></button>
+                <button class="item item3"><b>3</b></button>
+                <button class="operators subtract"><b>-</b></button>
+                <button class="item decimal"><b>.</b></button>
+                <button class="item item0"><b>0</b></button>
+                <button class="operators divide"><b>/</b></button>
+                <button class="operators multiply"><b>x</b></button>
+            </div>
+            <div class="grid2-container">
+                <button  class="item reset" id="reset"><b>RESET</b></button>
+                <button class="item equals" id="equals"><b>=</b></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var display = document.getElementById("calculate")
+        var reset = document.getElementById("reset")
+        var equal = document.getElementById("equals")
+        var deleteV = document.querySelector(".Del")
+        var buttons = document.querySelectorAll(".item, .operators");
+
+
+        var input = display.value;
+
+        function clear(){
+            display.value = '';
+        }
+
+        function Delete(){
+            display.value = display.value.slice(0,-1)
+        }
+
+        function appendValue(event) {
+            if(event.target.id !== "Del" && event.target.id !== "reset"){
+                display.value += event.target.innerText;
+            }
+        }
+
+
+        function Calculations(){
+            var input = display.value
+            if (input.includes("=")) {
+                display.value = input.replace("=", "");
+            }
+            input = input.replace(/x/g, "*")
+
+
+            try{
+                display.value = eval(input);
+                
+            }
+            catch(e){
+                display.value = "Error!!"
+            }
+            
+            
+        }
+
+        equal.addEventListener("click",Calculations);
+        buttons.forEach(button => button.addEventListener("click",appendValue));
+        reset.addEventListener("click",clear);
+        deleteV.addEventListener("click",Delete);
+
+    </script>
+    
+</body>
+</html>
